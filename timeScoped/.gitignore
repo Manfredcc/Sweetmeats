@@ -1,0 +1,42 @@
+# CMake生成的文件和目录  
+CMakeCache.txt  
+CMakeFiles/  
+cmake_install.cmake  
+CMakeOutput.log  
+  
+# 编译生成的文件和目录  
+*.o  
+*.a  
+*.so  
+*.so.*  
+*.dylib  
+*.exe  
+*.pdb  
+*.ipch  
+*.obj  
+*.lib  
+  
+# IDE和编辑器配置文件  
+.vscode/  
+*.sln  
+*.suo  
+*.vcxproj  
+*.vcxproj.filters  
+*.vcxproj.user  
+*.sdf  
+*.opensdf  
+  
+# 测试生成的文件  
+Testing/  
+*.test.log  
+  
+# 临时文件和目录  
+.DS_Store  
+*.bak  
+*.swp  
+*.tmp  
+*.log  
+*.err  
+  
+# 构建目录  
+build/  
