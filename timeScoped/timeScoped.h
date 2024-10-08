@@ -27,18 +27,22 @@ public:
     using clockType = std::chrono::high_resolution_clock;
     static_assert(numbers > 0, "numbers must be greter than zero");
     timeScoped(std::string savePath = "default.csv")
-         : mNumber{numbers * 2}, mSavePath{savePath}, mFinished{false} {}
+         : mNumber{numbers << 1}, mSavePath{savePath}, mFinished{false}
+    {
+        mSampleData.reserve(mNumber);
+        mElapseTime.reserve(numbers);
+    }
     void start()
     {
         if (mFinished)
             return;
-        mSampleData.push_back(clockType::now());
+        mSampleData.emplace_back(clockType::now());
     }
     void end()
     {
         if (mFinished)
             return;
-        mSampleData.push_back(clockType::now());
+        mSampleData.emplace_back(clockType::now());
 
         if (mNumber -= 2, 0 == mNumber) {
             saveData();
@@ -53,7 +57,7 @@ private:
             return;
         }
         for (size_t i = 0; i < mSampleData.size(); i += 2) {
-            mElapseTime.push_back(std::chrono::duration_cast<std::chrono::milliseconds>\
+            mElapseTime.emplace_back(std::chrono::duration_cast<std::chrono::milliseconds>\
                 (mSampleData[i + 1] - mSampleData[i]).count());
         }
         std::ofstream csvFile(mSavePath);
@@ -70,10 +74,10 @@ private:
         mMaximum = mElapseTime.back();  
         mMinimum = mElapseTime.front();  
         mAverage = std::accumulate(mElapseTime.begin(), mElapseTime.end(), 0.0) / mElapseTime.size();
-        if (size % 2 == 0) {
-            mMedian = (mElapseTime[size/ 2 - 1] + mElapseTime[size / 2]) / 2.0;
+        if (0 == size & 1) {
+            mMedian = (mElapseTime[(size >> 1) - 1] + mElapseTime[size >> 1]) / 2.0;
         } else {
-            mMedian = mElapseTime[size / 2];
+            mMedian = mElapseTime[size >> 1];
         }
         csvFile << "Max:" << mMaximum << ", Min:" << mMinimum << ", Aver:" << 
             mAverage << ", Medi:" << mMedian << std::endl;
@@ -86,8 +90,8 @@ private:
     double mMedian{0};
     double mMaximum{0};
     double mMinimum{0};
-    std::vector<std::chrono::high_resolution_clock::time_point> mSampleData;
-    std::vector<double> mElapseTime;
+    std::vector<std::chrono::high_resolution_clock::time_point> mSampleData{};
+    std::vector<double> mElapseTime{};
 };
 
 #endif /* __TIME_SCOPED_H__ */

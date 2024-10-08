@@ -5,6 +5,7 @@ cmake_install.cmake
 CMakeOutput.log  
   
 # 编译生成的文件和目录  
+/bin
 *.o  
 *.a  
 *.so  
